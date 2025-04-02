@@ -1,6 +1,4 @@
 import streamlit as st
-from langchain_ibm import WatsonxLLM
-from ibm_granite_community.notebook_utils import get_env_var
 from dotenv import load_dotenv
 from pydantic import BaseModel
 from typing import Literal

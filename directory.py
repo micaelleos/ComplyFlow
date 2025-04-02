@@ -4,6 +4,22 @@ from text import regulation
 from sidebar import side_bar
 from src.util import save_uploadedfile, init_workflow
 
+st.html(
+    """
+    <style>
+    .st-emotion-cache-1dp5vir {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        left: 0px;
+        height: 0.125rem;
+        background-image: linear-gradient(90deg,  rgb(174 190 255), rgb(51 211 114));
+        z-index: 999990;
+    }
+    </style>
+"""
+)
+
 if "current_regulation" not in st.session_state:
     st.session_state.current_regulation = {
         "regulation":None,
@@ -11,7 +27,6 @@ if "current_regulation" not in st.session_state:
         "action_plan": True, 
         "policies": True
     }
-
 
 side_bar()
 
@@ -44,12 +59,14 @@ if uploaded_file is not None:
 def reg_bloc(regulation):
     with st.container(height=400):
         with st.container():
+            button_init = "init" + regulation['title'].replace(" ", "") 
+            button_seedoc = "see" + regulation['title'].replace(" ", "") 
             st.write(f"**Title:** {regulation['title']}")
             st.write(f"**Status:** {regulation['status']}")
             st.write(f"**Text:** {regulation['text'][:200]}...")
-            if st.button("Init workflow",use_container_width=True):
+            if st.button("Init workflow",key=button_init, use_container_width=True):
                 init_workflow(regulation["id"])
-            if st.button("See documents", use_container_width= True):
+            if st.button("See documents",key=button_seedoc, use_container_width= True):
                 call_show_documents_page(regulation)
 
 if "regulations" in st.session_state:
