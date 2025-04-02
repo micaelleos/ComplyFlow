@@ -1,10 +1,15 @@
 import streamlit as st
 import time
+from PIL import Image
 
 def side_bar():
     s = st.sidebar
     with s:
-        st.logo("logoComplyFlow.png",size="large")
+        image = Image.open("logoComplyFlow.png")
+        image = image.resize((1000, 155))  # Ajuste conforme necessário
+
+        st.logo(image,size="large")
+        #s.image("logoComplyFlow.png")
         #st.markdown("# ComplyFlow")
     s.page_link("directory.py", label="Regulation Directory", icon="📂")
     with s:

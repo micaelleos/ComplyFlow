@@ -17,12 +17,12 @@ def doc_approved(role,type,doc,id_regulation,workflow:Literal["impact_analisys",
     elif workflow == 'policies':
         n = 2
 
-    if len(st.session_state.regulations[id_regulation]['docs']) == n +1 :
+    if len(st.session_state.regulations[id_regulation]['docs']) == n + 1:
 
         st.session_state.regulations[id_regulation]['docs'][n]['roles'][role] = "Approved"
         
         approved_dict = st.session_state.regulations[id_regulation]['docs'][n]['roles']
-        if "Not approved" in approved_dict.values():
+        if "Not approved" in approved_dict.values(): 
             status = "Pending review" 
         else: 
             status = "Approved"
@@ -36,7 +36,7 @@ def doc_approved(role,type,doc,id_regulation,workflow:Literal["impact_analisys",
             "text":doc,
             "status":status,
             "roles":approved_dict,
-            "workflow":workflow
+            "workflow":workflow 
         }
 
     else:
@@ -72,7 +72,9 @@ def save_uploadedfile(uploaded_file):
                 "status":"Not Analizes",
                 "docs":[{"roles":
                         {"Compliance":"Not approved",
-                        "Legal":"Not approved"}}]
+                        "Legal":"Not approved"}},
+                        ]
+
             })
 
 def search_regulation(id):

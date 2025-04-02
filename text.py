@@ -15,5 +15,46 @@ regulation = {"title":"12 U.S. Code § 4301 - Findings and purpose",
               "id":uuid.uuid4(),
               "text":text,
               "status":"Not Analized",
-              "docs":[]
+              "docs":[],
+              "messages":[] 
             }
+
+"""
+import uuid
+from datetime import datetime
+
+regulation = {
+    "title": "Regulation Title",
+    "id": uuid.uuid4(),
+    "text": "Full regulatory document text here...",
+    "status": "Not Analyzed",  # Status of the regulation in the workflow
+    "created_at": datetime.utcnow(),  # Timestamp for tracking
+    "docs": {
+        "impact_analysis": {
+            "status": "Pending",  # Status of this phase
+            "document": None,  # Stores the generated document
+            "approved_by": [],  # List of approved users/roles
+            "chatbot_id": uuid.uuid4(),  # Unique ID for the chatbot
+            "messages": []  # Chat history for this phase
+        },
+        "action_plan": {
+            "status": "Pending",
+            "document": None,
+            "approved_by": [],
+            "chatbot_id": uuid.uuid4(),
+            "messages": []
+        },
+        "policy_update": {
+            "status": "Pending",
+            "document": None,
+            "approved_by": [],
+            "chatbot_id": uuid.uuid4(),
+            "messages": []
+        }
+    }
+}
+
+
+
+
+"""
