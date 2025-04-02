@@ -7,10 +7,10 @@ import streamlit as st
 
 
 class Params(BaseModel):
-    regulatory_summary: dict = Field(description="Regulatory summary ")
-    impact_analysis: dict = Field(description="Impact Analysis")
-    action_plan: dict = Field(description="Action plan ")
-    final_recommendations: dict = Field(description="final recommendations ")
+    regulatory_summary: str = Field(description="Regulatory summary ")
+    impact_analysis: str = Field(description="Impact Analysis")
+    action_plan: str = Field(description="Action plan ")
+    final_recommendations: str = Field(description="final recommendations ")
 
 @tool(args_schema=Params)
 def show_analisys_to_user(**document:Params):

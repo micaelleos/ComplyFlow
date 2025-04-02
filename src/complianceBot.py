@@ -6,9 +6,18 @@ from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 
+from langchain.agents import AgentExecutor
+from langchain.schema.runnable import RunnablePassthrough
+from langchain.agents.format_scratchpad import format_to_openai_functions
+from langchain.prompts import MessagesPlaceholder
+from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
+from langchain.memory import ConversationBufferMemory
+from langchain_core.utils.function_calling import convert_to_openai_function
+from langchain.prompts import ChatPromptTemplate
+
 from dotenv import load_dotenv
 import streamlit as st
-from src.tools import tools
+from src.tools import tools, show_analisys_to_user
 from src.prompts import prompt
 from langchain_core.messages import AIMessage
 
@@ -17,7 +26,7 @@ load_dotenv()
 
 @st.cache_resource()
 def memory(id):
-    memory = MemorySaver() 
+    memory = ConversationBufferMemory(return_messages=True,memory_key="chat_history")
     return memory
 
 class ComplianceAgent:
@@ -27,34 +36,33 @@ class ComplianceAgent:
 
         self.model = ChatOpenAI(model="gpt-4o",api_key=self.OPENAI_API_KEY)
 
-        self.tools = tools
+        self.tools = show_analisys_to_user
         self.memory = memory(hash)
-        self.config = {"configurable": {"thread_id": "def234"}}
+        self.model_with_tool = self.model.bind(functions=[convert_to_openai_function(self.tools)])
 
-        self.agent_executor = create_react_agent(self.model, self.tools, checkpointer=self.memory, state_modifier=prompt)
+        self.prompt = ChatPromptTemplate.from_messages([
+            ("system", f"{prompt}"),
+            MessagesPlaceholder(variable_name="chat_history"),
+            ("user", "{input}"),
+            MessagesPlaceholder(variable_name="agent_scratchpad")
+        ])
+
+        self.agent_chain = RunnablePassthrough.assign(
+            agent_scratchpad= lambda x: format_to_openai_functions(x["intermediate_steps"])
+        ) | self.prompt | self.model_with_tool | OpenAIFunctionsAgentOutputParser()
+
+        self.agent_executor = AgentExecutor(agent=self.agent_chain, tools=[self.tools], verbose=True, memory=self.memory,handle_parsing_errors=True)
 
 
-    def chat(self,query:str):
-        menssage = None
-        for event in self.agent_executor.stream(
-            {"messages": [{"role": "user", "content": query}]},
-            stream_mode="values",
-            config=self.config,
-        ):
-            event["messages"][-1].pretty_print()
-            if isinstance(event["messages"][-1], AIMessage):
-                menssage = event["messages"][-1]
-        return menssage.content
+    def chat(self,query:str):  
+        response=self.agent_executor.invoke({'input':query})
+        return response['output']
     
     def initial_analysis(self,regulation):
         task = f"""
             ## Analise the following regulation:
 
-            {regulation}
+            {str(regulation)}
             """
-        for event in self.agent_executor.stream(
-            {"messages": [{"role": "user", "content": task}]},
-            stream_mode="values",
-            config=self.config,
-        ):
-            event["messages"][-1].pretty_print()
+        response=self.agent_executor.invoke({'input':task})
+        return response['output']

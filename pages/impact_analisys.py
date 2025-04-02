@@ -84,16 +84,17 @@ with st.container():
                 st.session_state.messages.append({"role": "user", "content": prompt})
                 atualizar_chat(chat_container,prompt)
                 
-    with col11:  
-        print("Session State-------------",st.session_state.document)      
+    with col11:   
         if st.session_state.document:
             with st.expander("Document",expanded=True):
+                print(st.session_state.document)
                 for i in st.session_state.document:
-                    st.markdown("## "+st.session_state.document[i]["title"])
-                    st.markdown(st.session_state.document[i]["description"])
+                    st.markdown(i)
+                    st.markdown(st.session_state.document[i])
+                    
         else:
             with st.expander("Document",expanded=False):
-                st.markdown(st.session_state.document)
+                st.markdown("__Document__")
 
         with st.container(border=False):
             colsx = st.columns([0.3,0.3,0.3])
