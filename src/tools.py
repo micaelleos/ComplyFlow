@@ -13,12 +13,10 @@ class Params(BaseModel):
     final_recommendations: str = Field(description="final recommendations ")
 
 @tool(args_schema=Params)
-def show_analisys_to_user(**document:Params):
+def show_analisys_to_user(**document):
     """Use this action to show to the user the Regulatory Impact Analysis Document
     """
     st.session_state.document = document
-    print("Session State-------------",st.session_state.document)
-    
     return "The document was shown with success."
 
 

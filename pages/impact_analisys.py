@@ -87,10 +87,9 @@ with st.container():
     with col11:   
         if st.session_state.document:
             with st.expander("Document",expanded=True):
-                print(st.session_state.document)
                 for i in st.session_state.document:
-                    st.markdown(i)
-                    st.markdown(st.session_state.document[i])
+                    st.markdown(f'**{i.replace("_"," ").title()}**')
+                    st.markdown(st.session_state.document[i].replace("\n","\n "))
                     
         else:
             with st.expander("Document",expanded=False):
