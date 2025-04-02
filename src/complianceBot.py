@@ -21,9 +21,8 @@ def memory(id):
     return memory
 
 class ComplianceAgent:
-    def __init__(self, params, regulation,hash):
+    def __init__(self, params, hash):
         self.params =  params
-        self.regulation = regulation
         self.OPENAI_API_KEY=os.environ["OPEN_API_KEY"]
 
         self.model = ChatOpenAI(model="gpt-4o",api_key=self.OPENAI_API_KEY)
@@ -46,3 +45,16 @@ class ComplianceAgent:
             if isinstance(event["messages"][-1], AIMessage):
                 menssage = event["messages"][-1]
         return menssage.content
+    
+    def initial_analysis(self,regulation):
+        task = f"""
+            ## Analise the following regulation:
+
+            {regulation}
+            """
+        for event in self.agent_executor.stream(
+            {"messages": [{"role": "user", "content": task}]},
+            stream_mode="values",
+            config=self.config,
+        ):
+            event["messages"][-1].pretty_print()

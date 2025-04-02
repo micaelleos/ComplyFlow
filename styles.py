@@ -1,9 +1,34 @@
 import streamlit as st
 
+def styles_directory():
+    st.html(
+    """
+    <style>
+    .st-emotion-cache-1dp5vir {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        left: 0px;
+        height: 0.125rem;
+        background-image: linear-gradient(90deg,  rgb(174 190 255), rgb(51 211 114));
+        z-index: 999990;
+    }
+    </style>
+"""
+)
+
 def styles():
     st.markdown("""
-                <style>                
-
+                <style>   
+                    .st-emotion-cache-1dp5vir {
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                left: 0px;
+                height: 0.125rem;
+                background-image: linear-gradient(90deg,  rgb(174 190 255), rgb(51 211 114));
+                z-index: 999990;
+            }         
                 .st-emotion-cache-12fmjuu{
                 height: 1.75rem;
                 }

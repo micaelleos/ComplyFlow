@@ -10,7 +10,8 @@ def side_bar():
     with s:
         if "current_regulation" in st.session_state:
             if st.session_state.current_regulation['regulation']:
-                st.write(f"**Regulation in Analisys :** *{st.session_state.current_regulation['regulation']['title']}*")
+                with st.container(border=True):
+                    st.write(f"**Regulation in Analisys :** *{st.session_state.current_regulation['regulation']['title']}*")
         st.write("Workflow")
         impact_analisys = st.session_state.current_regulation['impact_analisys']
         action_plan = st.session_state.current_regulation['action_plan']

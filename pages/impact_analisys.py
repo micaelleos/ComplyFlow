@@ -56,10 +56,11 @@ def atualizar_chat(chat_container,prompt=None):
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+chat = ComplianceAgent(st.session_state.system_params,hash)
+
 if "document" not in st.session_state:
     st.session_state.document = None
-
-chat = ComplianceAgent(st.session_state.system_params,st.session_state.regulations[0],hash)
+    chat.initial_analysis(st.session_state.current_regulation['regulation'])
 
 with st.container():
     
@@ -83,16 +84,17 @@ with st.container():
                 st.session_state.messages.append({"role": "user", "content": prompt})
                 atualizar_chat(chat_container,prompt)
                 
-    with col11:        
+    with col11:  
+        print("Session State-------------",st.session_state.document)      
         if st.session_state.document:
             with st.expander("Document",expanded=True):
                 for i in st.session_state.document:
                     st.markdown("## "+st.session_state.document[i]["title"])
                     st.markdown(st.session_state.document[i]["description"])
-
         else:
             with st.expander("Document",expanded=False):
-                st.markdown("__Document__")
+                st.markdown(st.session_state.document)
+
         with st.container(border=False):
             colsx = st.columns([0.3,0.3,0.3])
             with colsx[0]:

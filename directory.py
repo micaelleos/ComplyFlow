@@ -3,22 +3,10 @@ import os
 from text import regulation
 from sidebar import side_bar
 from src.util import save_uploadedfile, init_workflow
+from styles import styles_directory
 
-st.html(
-    """
-    <style>
-    .st-emotion-cache-1dp5vir {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        left: 0px;
-        height: 0.125rem;
-        background-image: linear-gradient(90deg,  rgb(174 190 255), rgb(51 211 114));
-        z-index: 999990;
-    }
-    </style>
-"""
-)
+styles_directory()
+
 
 if "current_regulation" not in st.session_state:
     st.session_state.current_regulation = {
