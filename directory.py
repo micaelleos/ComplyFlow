@@ -55,6 +55,7 @@ uploaded_file = st.file_uploader("Add a new regulation", type=['pdf'], accept_mu
 if uploaded_file is not None:
     with st.spinner('Uploading file...'):
         save_uploadedfile(uploaded_file)
+        
 
 def reg_bloc(regulation):
     with st.container(height=400):

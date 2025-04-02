@@ -17,8 +17,6 @@ def doc_approved(role,type,doc,id_regulation,workflow:Literal["impact_analisys",
     elif workflow == 'policies':
         n = 2
 
-    print("OIIII",len(st.session_state.regulations[id_regulation]['docs']), n+1)
-
     if len(st.session_state.regulations[id_regulation]['docs']) == n +1 :
 
         st.session_state.regulations[id_regulation]['docs'][n]['roles'][role] = "Approved"
@@ -65,21 +63,28 @@ def doc_summary(text):
 def save_uploadedfile(uploaded_file):
     with pdfplumber.open(uploaded_file) as pdf:
         text = "\n\n".join(page.extract_text() or "" for page in pdf.pages)
+    
+    if not search_regulation_title(uploaded_file.name):
         st.session_state.regulations.append(
-            {"title":"",
-             "id":uuid.uuid4(),
-             "text":text,
-             "status":"Not Analizes",
-             "docs":[{"roles":
-                     {"Compliance":"Not approved",
-                      "Legal":"Not approved"}}]
+            {"title":uploaded_file.name,
+                "id":uuid.uuid4(),
+                "text":text,
+                "status":"Not Analizes",
+                "docs":[{"roles":
+                        {"Compliance":"Not approved",
+                        "Legal":"Not approved"}}]
             })
-
 
 def search_regulation(id):
     for reg in st.session_state.regulations:
         if reg['id'] == id:
             return reg
+        
+def search_regulation_title(title):
+    for reg in st.session_state.regulations:
+        if reg['title'] == title:
+            return True
+    return False
 
 
 def init_workflow(id):
