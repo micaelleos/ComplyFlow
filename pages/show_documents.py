@@ -12,20 +12,12 @@ regulation = st.session_state.show_regulation
 
 
 for reg in regulation["docs"]:
-    with st.container(border=True, height= 500):
-        if reg["title"] == 'Regulatory Impact Analysis':    
-            st.markdown(f"#### {reg['title']}")
-            st.markdown(f"##### Summary")
-            st.markdown(reg['text']['regulatory_summary'])
-
-            st.markdown(f"##### Impact Analysis")
-            st.markdown(reg['text']['impact_analysis'])
-
-            st.markdown(f"##### Action Plan")
-            st.markdown(reg['text']['action_plan'])
-
-            st.markdown(f"##### Final Recomendation")
-            st.markdown(reg['text']['final_recommendations'])
-            st.markdown(f"**Document Status**: {reg['status']}")
-            for r,s in reg['roles'].items():
-                st.markdown(f"**{r}**: {s}")
+    if regulation["docs"][reg]['document']:
+        with st.container(border=True, height= 500):
+            if reg == 'impact_analysis':    
+                for i,c in regulation["docs"][reg]['document'].items():
+                    st.markdown(f'**{i.replace("_", " ").title()}**')
+                    st.markdown(c)
+            st.markdown("**Approved by:**")
+            for r in regulation["docs"][reg]['approved_by']:
+                st.markdown(f'{r}')

@@ -17,9 +17,10 @@ from langchain.prompts import ChatPromptTemplate
 
 from dotenv import load_dotenv
 import streamlit as st
-from src.tools import tools, show_analisys_to_user
+from src.tools import generate_tools_for_user
 from src.prompts import prompt
 from langchain_core.messages import AIMessage
+from typing import Literal
 
 
 load_dotenv()
@@ -30,13 +31,13 @@ def memory(id):
     return memory
 
 class ComplianceAgent:
-    def __init__(self, params, hash):
+    def __init__(self, params, hash, workflow:Literal["impact_analysis", "action_plan", "policy_update"]):
         self.params =  params
         self.OPENAI_API_KEY=os.environ["OPEN_API_KEY"]
 
         self.model = ChatOpenAI(model="gpt-4o",api_key=self.OPENAI_API_KEY)
 
-        self.tools = show_analisys_to_user
+        self.tools = generate_tools_for_user(workflow=workflow)
         self.memory = memory(hash)
         self.model_with_tool = self.model.bind(functions=[convert_to_openai_function(self.tools)])
 

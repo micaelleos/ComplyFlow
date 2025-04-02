@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 
 text = """12 U.S. Code § 4301 - Findings and purpose
 (a)Findings
@@ -11,24 +12,12 @@ It is the purpose of this chapter to require the clear and uniform disclosure of
 so that consumers can make a meaningful comparison between the competing claims of depository institutions with regard to deposit accounts.
 """
 
-regulation = {"title":"12 U.S. Code § 4301 - Findings and purpose",
-              "id":uuid.uuid4(),
-              "text":text,
-              "status":"Not Analized",
-              "docs":[],
-              "messages":[] 
-            }
-
-"""
-import uuid
-from datetime import datetime
-
 regulation = {
-    "title": "Regulation Title",
+    "title": "12 U.S. Code § 4301 - Findings and purpose",
     "id": uuid.uuid4(),
-    "text": "Full regulatory document text here...",
+    "text": text,
     "status": "Not Analyzed",  # Status of the regulation in the workflow
-    "created_at": datetime.utcnow(),  # Timestamp for tracking
+    "created_at": datetime.now(),  # Timestamp for tracking
     "docs": {
         "impact_analysis": {
             "status": "Pending",  # Status of this phase
@@ -53,8 +42,3 @@ regulation = {
         }
     }
 }
-
-
-
-
-"""

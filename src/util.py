@@ -4,61 +4,24 @@ from pydantic import BaseModel
 from typing import Literal
 import pdfplumber
 import uuid
+from datetime import datetime
 
 load_dotenv()
 
-def doc_approved(role,type,doc,id_regulation,workflow:Literal["impact_analisys", "action_plan", "policies"]):
+def doc_approved(role,current_regulation,workflow:Literal["impact_analisys", "action_plan", "policies"]):
     
-    n = None
-    if workflow == 'impact_analisys':
-        n = 0
-    elif workflow == "action_plan":
-        n = 1
-    elif workflow == 'policies':
-        n = 2
+    if role not in st.session_state.current_regulation["docs"][workflow]["approved_by"]:
+        st.session_state.current_regulation["docs"][workflow]["approved_by"].append(role)
 
-    if len(st.session_state.regulations[id_regulation]['docs']) == n + 1:
+    for reg in st.session_state.regulations:
+        if reg['id']==current_regulation['id']:
+            reg = st.session_state.current_regulation.copy()
+    print(st.session_state.regulations)
 
-        st.session_state.regulations[id_regulation]['docs'][n]['roles'][role] = "Approved"
-        
-        approved_dict = st.session_state.regulations[id_regulation]['docs'][n]['roles']
-        if "Not approved" in approved_dict.values(): 
-            status = "Pending review" 
-        else: 
-            status = "Approved"
-            if workflow == "impact_analisys":
-                st.session_state.current_regulation["action_plan"] = False
-            if workflow == "action_plan":
-                st.session_state.current_regulation["policies"] = False
-
-        st.session_state.regulations[id_regulation]['docs'][n] = {
-            "title":type,
-            "text":doc,
-            "status":status,
-            "roles":approved_dict,
-            "workflow":workflow 
-        }
-
-    else:
-
-        role_dict = {
-                "Compliance":"Not approved",
-                "Legal":"Not approved",
-                "Risk":"Not approved",
-                "Operations":"Not approved"
-            }
-        role_dict[role] = "Approved"
-
-        st.session_state.regulations[id_regulation]['docs'].append({
-            "title":type,
-            "text":doc,
-            "status":"Pending review",
-            "roles":role_dict,
-            "workflow":workflow
-        })  
     
 def doc_summary(text):
     pass
+
 
 def save_uploadedfile(uploaded_file):
     with pdfplumber.open(uploaded_file) as pdf:
@@ -66,7 +29,40 @@ def save_uploadedfile(uploaded_file):
     
     if not search_regulation_title(uploaded_file.name):
         st.session_state.regulations.append(
-            {"title":uploaded_file.name,
+                    {
+            "title": uploaded_file.name,
+            "id": uuid.uuid4(),
+            "text": text,
+            "status": "Not Analyzed",  # Status of the regulation in the workflow
+            "created_at": datetime.now(),  # Timestamp for tracking
+            "docs": {
+                "impact_analysis": {
+                    "status": "Pending",  # Status of this phase
+                    "document": None,  # Stores the generated document
+                    "approved_by": [],  # List of approved users/roles
+                    "chatbot_id": uuid.uuid4(),  # Unique ID for the chatbot
+                    "messages": []  # Chat history for this phase
+                },
+                "action_plan": {
+                    "status": "Pending",
+                    "document": None,
+                    "approved_by": [],
+                    "chatbot_id": uuid.uuid4(),
+                    "messages": []
+                },
+                "policy_update": {
+                    "status": "Pending",
+                    "document": None,
+                    "approved_by": [],
+                    "chatbot_id": uuid.uuid4(),
+                    "messages": []
+                }
+            }
+        }
+            )
+        
+        """
+                    {"title":uploaded_file.name,
                 "id":uuid.uuid4(),
                 "text":text,
                 "status":"Not Analizes",
@@ -75,7 +71,9 @@ def save_uploadedfile(uploaded_file):
                         "Legal":"Not approved"}},
                         ]
 
-            })
+            }
+        
+        """
 
 def search_regulation(id):
     for reg in st.session_state.regulations:
@@ -88,8 +86,9 @@ def search_regulation_title(title):
             return True
     return False
 
-
+ 
 def init_workflow(id):
-    st.session_state.current_regulation["regulation"] = search_regulation(id)
-    st.session_state.current_regulation["impact_analisys"] = False
+    st.session_state.current_regulation = search_regulation(id)
+    print(st.session_state.current_regulation )
+    st.session_state.current_regulation["docs"]["impact_analysis"]["status"] = 'Processing'
     st.switch_page("pages/impact_analisys.py")

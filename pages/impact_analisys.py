@@ -6,12 +6,10 @@ from src.util import doc_approved
 from sidebar import side_bar
 import uuid
 
+
 side_bar()
 
 styles()
-
-hash = uuid.uuid4()
-
 
 @st.dialog("Role configuration")
 def modal():
@@ -32,7 +30,7 @@ def atualizar_chat(chat_container,prompt=None):
         if not prompt:
             initial_message = st.chat_message("assistant")
             initial_message.write("Hi, how can I assist you today?")
-        messages = st.session_state.messages
+        messages = st.session_state.current_regulation["docs"]["impact_analysis"]["messages"]
 
         for i in range(0,len(messages)):
             message = messages[i]       
@@ -50,17 +48,15 @@ def atualizar_chat(chat_container,prompt=None):
                     response=chat.chat(prompt)
                 st.markdown(response)
 
-            st.session_state.messages.append({"role": "assistant", "content": response})
+            st.session_state.current_regulation["docs"]["impact_analysis"]["messages"].append({"role": "assistant", "content": response})
 
 
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+hash = st.session_state.current_regulation["docs"]["impact_analysis"]["chatbot_id"]
 
-chat = ComplianceAgent(st.session_state.system_params,hash)
+chat = ComplianceAgent(st.session_state.system_params,hash,workflow='impact_analysis')
 
-if "document" not in st.session_state:
-    st.session_state.document = None
-    chat.initial_analysis(st.session_state.current_regulation['regulation'])
+if not st.session_state.current_regulation["docs"]["impact_analysis"]["document"]:
+    chat.initial_analysis(st.session_state.current_regulation)
 
 with st.container():
     
@@ -81,15 +77,15 @@ with st.container():
 
             if prompt:= st.chat_input("Make a question...",key="user_input"):
         
-                st.session_state.messages.append({"role": "user", "content": prompt})
+                st.session_state.current_regulation["docs"]["impact_analysis"]["messages"].append({"role": "user", "content": prompt})
                 atualizar_chat(chat_container,prompt)
                 
     with col11:   
-        if st.session_state.document:
+        if st.session_state.current_regulation["docs"]["impact_analysis"]["document"]:
             with st.expander("Document",expanded=True):
-                for i in st.session_state.document:
+                for i in st.session_state.current_regulation["docs"]["impact_analysis"]["document"]:
                     st.markdown(f'**{i.replace("_"," ").title()}**')
-                    st.markdown(st.session_state.document[i].replace("\n","\n "))
+                    st.markdown(st.session_state.current_regulation["docs"]["impact_analysis"]["document"][i].replace("\n","\n "))
                     
         else:
             with st.expander("Document",expanded=False):
@@ -100,9 +96,9 @@ with st.container():
             with colsx[0]:
                 pass
             with colsx[1]:
-                if st.session_state.document:
+                if st.session_state.current_regulation["docs"]["impact_analysis"]["document"]:
                     if st.button(label="Approve",
                                        type="primary",
                                        use_container_width=True):
-                        doc_approved(role=st.session_state.system_params["role"],type="Regulatory Impact Analysis", doc= st.session_state.document,workflow='impact_analisys', id_regulation=0)
+                        doc_approved(role=st.session_state.system_params["role"], current_regulation=st.session_state.current_regulation,workflow="impact_analysis")
                         

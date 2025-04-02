@@ -9,12 +9,7 @@ styles_directory()
 
 
 if "current_regulation" not in st.session_state:
-    st.session_state.current_regulation = {
-        "regulation":None,
-        "impact_analisys": True, 
-        "action_plan": True, 
-        "policies": True
-    }
+    st.session_state.current_regulation = None
 
 side_bar()
 

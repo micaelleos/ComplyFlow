@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from langchain_core.tools import BaseTool
 from langchain.agents import tool
 import streamlit as st
+from typing import Literal
 
 
 class Params(BaseModel):
@@ -12,12 +13,15 @@ class Params(BaseModel):
     action_plan: str = Field(description="Action plan ")
     final_recommendations: str = Field(description="final recommendations ")
 
-@tool(args_schema=Params)
-def show_analisys_to_user(**document):
-    """Use this action to show to the user the Regulatory Impact Analysis Document
-    """
-    st.session_state.document = document
-    return "The document was shown with success."
+def generate_tools_for_user(workflow:Literal["impact_analysis", "action_plan", "policy_update"]) -> List[BaseTool]:
+    """Generate a set of tools that have a user id associated with them."""
 
+    @tool(args_schema=Params)
+    def show_analisys_to_user(**document):
+        """Use this action to show to the user the Regulatory Impact Analysis Document
+        """
+        st.session_state.current_regulation["docs"][workflow]["document"] = document
+        return "The document was shown with success."
+        
+    return show_analisys_to_user
 
-tools=[show_analisys_to_user]
