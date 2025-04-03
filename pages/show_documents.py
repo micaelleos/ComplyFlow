@@ -29,3 +29,12 @@ for reg in regulation["docs"]:
                 for r in regulation["docs"][reg]['approved_by']:
                     st.markdown(f'{r}')
 
+            if reg == 'policy_update':    
+                st.markdown("### Policies and Procedures ")
+                for i,c in regulation["docs"][reg]['document'].items():
+                    st.markdown(f'**{i.replace("_", " ").title()}**')
+                    st.markdown(c)
+                st.markdown("**Approved by:**")
+                for r in regulation["docs"][reg]['approved_by']:
+                    st.markdown(f'{r}')
+

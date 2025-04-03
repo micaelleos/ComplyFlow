@@ -17,8 +17,8 @@ from langchain.prompts import ChatPromptTemplate
 
 from dotenv import load_dotenv
 import streamlit as st
-from src.tools import show_action_plan_to_user, show_analisys_to_user
-from src.prompts import impact_analysis_prompt, action_plan_prompt
+from src.tools import show_action_plan_to_user, show_analisys_to_user, show_policy_update_to_user
+from src.prompts import impact_analysis_prompt, action_plan_prompt, policy_update_prompt
 from langchain_core.messages import AIMessage
 from typing import Literal
 
@@ -47,7 +47,8 @@ class ComplianceAgent:
             self.system_prompt = action_plan_prompt
             self.tools = show_action_plan_to_user
         elif workflow == 'policy_update':
-            self.system_prompt = impact_analysis_prompt
+            self.system_prompt = policy_update_prompt
+            self.tools = show_policy_update_to_user
 
         self.model_with_tool = self.model.bind(functions=[convert_to_openai_function(self.tools)])
         

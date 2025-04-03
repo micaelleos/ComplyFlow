@@ -6,12 +6,10 @@ from src.util import doc_approved
 from sidebar import side_bar
 import uuid
 
+
 side_bar()
 
 styles()
-
-hash = uuid.uuid4()
-
 
 @st.dialog("Role configuration")
 def modal():
@@ -32,7 +30,7 @@ def atualizar_chat(chat_container,prompt=None):
         if not prompt:
             initial_message = st.chat_message("assistant")
             initial_message.write("Hi, how can I assist you today?")
-        messages = st.session_state.messages
+        messages = st.session_state.current_regulation["docs"]['policy_update']["messages"]
 
         for i in range(0,len(messages)):
             message = messages[i]       
@@ -50,23 +48,23 @@ def atualizar_chat(chat_container,prompt=None):
                     response=chat.chat(prompt)
                 st.markdown(response)
 
-            st.session_state.messages.append({"role": "assistant", "content": response})
+            st.session_state.current_regulation["docs"]['policy_update']["messages"].append({"role": "assistant", "content": response})
 
 
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+hash = st.session_state.current_regulation["docs"]['policy_update']["chatbot_id"]
 
-if "document" not in st.session_state:
-    st.session_state.document = None
+chat = ComplianceAgent(st.session_state.system_params,hash,workflow='policy_update')
 
-chat = ComplianceAgent(st.session_state.system_params,st.session_state.regulations[0],hash)
+if not st.session_state.current_regulation["docs"]['policy_update']["document"]:
+    chat.initial_analysis(st.session_state.current_regulation)
+
 
 with st.container():
     
     with st.container():
         col1, col2 = st.columns([0.8,0.2])
         with col1:
-            st.title("Regulatory Impact Analysis Agent")
+            st.title("Internal Polices and Procedures Agent")
         with col2:
             if st.button("Role: " + st.session_state.system_params["role"],use_container_width=True): #:information_source: :receipt:
                 modal()
@@ -80,27 +78,28 @@ with st.container():
 
             if prompt:= st.chat_input("Make a question...",key="user_input"):
         
-                st.session_state.messages.append({"role": "user", "content": prompt})
+                st.session_state.current_regulation["docs"]['policy_update']["messages"].append({"role": "user", "content": prompt})
                 atualizar_chat(chat_container,prompt)
                 
-    with col11:        
-        if st.session_state.document:
+    with col11:   
+        if st.session_state.current_regulation["docs"]['policy_update']["document"]:
             with st.expander("Document",expanded=True):
-                for i in st.session_state.document:
-                    st.markdown("## "+st.session_state.document[i]["title"])
-                    st.markdown(st.session_state.document[i]["description"])
-
+                for i in st.session_state.current_regulation["docs"]['policy_update']["document"]:
+                    st.markdown(f'**{i.replace("_"," ").title()}**')
+                    st.markdown(st.session_state.current_regulation["docs"]['policy_update']["document"][i])
+                    
         else:
             with st.expander("Document",expanded=False):
                 st.markdown("__Document__")
+
         with st.container(border=False):
             colsx = st.columns([0.3,0.3,0.3])
             with colsx[0]:
                 pass
             with colsx[1]:
-                if st.session_state.document:
+                if st.session_state.current_regulation["docs"]['policy_update']["document"]:
                     if st.button(label="Approve",
                                        type="primary",
                                        use_container_width=True):
-                        doc_approved(role=st.session_state.system_params["role"],type="Internal Polices and Procedures", doc= st.session_state.document,workflow='policies', id_regulation=0)
+                        doc_approved(role=st.session_state.system_params["role"], current_regulation=st.session_state.current_regulation,workflow='policy_update')
                         

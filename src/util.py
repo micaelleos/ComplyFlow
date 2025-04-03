@@ -34,7 +34,6 @@ def display_action_plan(action_plan: dict):
     st.markdown(f"#### Regulation: {action_plan['regulation_title']}")
     st.markdown(f"**Receipt Date:** {action_plan['received_date']}")
     st.markdown(f"**Compliance Deadline:** {action_plan['compliance_deadline']}")
-    st.markdown(f"**Status:** {action_plan['status']}")
     st.markdown(f"**Objective:** {action_plan['objective']}")
     
     st.markdown("#### Affected Areas")
