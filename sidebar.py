@@ -9,8 +9,8 @@ def side_bar():
         image = image.resize((1000, 155))  # Ajuste conforme necessário
 
         st.logo(image,size="large")
-        #s.image("logoComplyFlow.png")
-        #st.markdown("# ComplyFlow")
+
+    
     s.page_link("directory.py", label="Regulation Directory", icon="📂")
     with s:
         if "current_regulation" in st.session_state:
@@ -30,3 +30,7 @@ def side_bar():
     s.page_link("pages/impact_analisys.py", label="Regulatory Impact Analysis", icon="1️⃣", disabled= impact_analisys)
     s.page_link("pages/action_plan.py", label="Regulatory Action Plan", icon="2️⃣", disabled= action_plan)
     s.page_link("pages/policies.py", label="Internal Policies and Procedures", icon="3️⃣", disabled = policies)
+
+    with s:
+        st.write("Resources")
+        s.page_link("pages/about.py", label="About") 
