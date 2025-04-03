@@ -2,7 +2,7 @@ import streamlit as st
 from src.complianceBot import ComplianceAgent
 from styles import *
 import os
-from src.util import doc_approved
+from src.util import doc_approved, display_action_plan
 from sidebar import side_bar
 import uuid
 
@@ -56,7 +56,13 @@ hash = st.session_state.current_regulation["docs"]['action_plan']["chatbot_id"]
 chat = ComplianceAgent(st.session_state.system_params,hash,workflow='action_plan')
 
 if not st.session_state.current_regulation["docs"]['action_plan']["document"]:
+#     docs =f"""
+#     Regulation: {}
+#     Impact Regulatory Analysis: {st.session_state.current_regulation["docs"]["impact_analysis"]["document"]}
+# """
     chat.initial_analysis(st.session_state.current_regulation)
+
+print(st.session_state.current_regulation)
 
 with st.container():
     
@@ -83,9 +89,11 @@ with st.container():
     with col11:   
         if st.session_state.current_regulation["docs"]['action_plan']["document"]:
             with st.expander("Document",expanded=True):
-                for i in st.session_state.current_regulation["docs"]['action_plan']["document"]:
-                    st.markdown(f'**{i.replace("_"," ").title()}**')
-                    st.markdown(st.session_state.current_regulation["docs"]['action_plan']["document"][i].replace("\n","\n "))
+                print('AQUI-------------------',st.session_state.current_regulation["docs"]['action_plan']["document"])
+                display_action_plan(st.session_state.current_regulation["docs"]['action_plan']["document"])
+                # for i in st.session_state.current_regulation["docs"]['action_plan']["document"]:
+                #     st.markdown(f'**{i.replace("_"," ").title()}**')
+                #     st.markdown(st.session_state.current_regulation["docs"]['action_plan']["document"][i])
                     
         else:
             with st.expander("Document",expanded=False):

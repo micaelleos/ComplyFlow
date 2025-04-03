@@ -6,6 +6,11 @@ from langchain.agents import tool
 import streamlit as st
 from typing import Literal
 
+from pydantic import BaseModel, Field
+from typing import List, Optional, Union
+from uuid import uuid4, UUID
+from datetime import datetime
+
 
 class Params(BaseModel):
     regulatory_summary: str = Field(description="Regulatory summary ")
@@ -13,15 +18,49 @@ class Params(BaseModel):
     action_plan: str = Field(description="Action plan ")
     final_recommendations: str = Field(description="final recommendations ")
 
-def generate_tools_for_user(workflow:Literal["impact_analysis", "action_plan", "policy_update"]) -> List[BaseTool]:
-    """Generate a set of tools that have a user id associated with them."""
+class ActionItem(BaseModel):
+    action: str = Field(..., description="Descrição da ação a ser tomada")
+    responsible: str = Field(..., description="Pessoa ou equipe responsável pela ação")
+    area: str = Field(..., description="Área envolvida na execução da ação")
+    priority: str = Field(..., description="Prioridade da ação (Alta, Média, Baixa)")
+    deadline: Optional[Union[datetime, str]] = Field(None, description="Prazo para conclusão da ação ou 'Ongoing' se contínuo")
+    status: str = Field(default="Pendente", description="Status atual da ação")
+    comments: Optional[str] = Field(None, description="Comentários adicionais sobre a ação")
 
-    @tool(args_schema=Params)
-    def show_analisys_to_user(**document):
-        """Use this action to show to the user the Regulatory Impact Analysis Document
-        """
-        st.session_state.current_regulation["docs"][workflow]["document"] = document
-        return "The document was shown with success."
-        
-    return show_analisys_to_user
+class RiskMitigation(BaseModel):
+    risk: str = Field(..., description="Descrição do risco identificado")
+    impact: str = Field(..., description="Impacto potencial do risco")
+    probability: str = Field(..., description="Probabilidade de ocorrência (Alta, Média, Baixa)")
+    mitigation_action: str = Field(..., description="Ação para mitigar o risco")
+
+class ActionPlan(BaseModel):
+    id: UUID = Field(default_factory=uuid4, description="Identificador único do plano de ação")
+    regulation_title: str = Field(..., description="Título da regulação relacionada")
+    received_date: Optional[Union[datetime, str]] = Field(..., description="Data de recebimento da regulação")
+    compliance_deadline: Optional[Union[datetime, str]] = Field(..., description="Prazo final para conformidade")
+    status: str = Field(default="Rascunho", description="Status geral do plano de ação")
+    objective: str = Field(..., description="Objetivo do plano de ação e resumo da regulação")
+    affected_areas: List[str] = Field(..., description="Áreas impactadas pela regulação")
+    risks: List[RiskMitigation] = Field(default=[], description="Lista de riscos identificados e ações de mitigação")
+    actions: List[ActionItem] = Field(default=[], description="Lista de ações a serem executadas")
+    monitoring_process: str = Field(..., description="Descrição do processo de monitoramento e atualização do plano")
+
+
+
+
+@tool(args_schema=Params)
+def show_analisys_to_user(**document):
+    """Use this action to show to the user the Regulatory Impact Analysis Document
+    """
+    st.session_state.current_regulation["docs"]['impact_analysis']["document"] = document
+    return "The document was shown with success."
+
+@tool(args_schema=ActionPlan)
+def show_action_plan_to_user(**document):
+    """Use this action to show to the user the Regulatory Impact Analysis Document
+    """
+    st.session_state.current_regulation["docs"]['action_plan']["document"] = document
+    return "The document was shown with success."
+    
+
 

@@ -1,5 +1,6 @@
 from sidebar import side_bar
 import streamlit as st
+from src.util import display_action_plan
 
 side_bar()
 
@@ -18,6 +19,13 @@ for reg in regulation["docs"]:
                 for i,c in regulation["docs"][reg]['document'].items():
                     st.markdown(f'**{i.replace("_", " ").title()}**')
                     st.markdown(c)
-            st.markdown("**Approved by:**")
-            for r in regulation["docs"][reg]['approved_by']:
-                st.markdown(f'{r}')
+                st.markdown("**Approved by:**")
+                for r in regulation["docs"][reg]['approved_by']:
+                    st.markdown(f'{r}')
+            
+            if reg == 'action_plan':    
+                display_action_plan(regulation["docs"][reg]['document'])
+                st.markdown("**Approved by:**")
+                for r in regulation["docs"][reg]['approved_by']:
+                    st.markdown(f'{r}')
+
