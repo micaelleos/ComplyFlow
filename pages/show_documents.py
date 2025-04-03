@@ -11,30 +11,34 @@ if st.button("Back"):
 
 regulation = st.session_state.show_regulation 
 
-for reg in regulation["docs"]:
-    if regulation["docs"][reg]['document']:
-        with st.container(border=True, height= 500):
-            if reg == 'impact_analysis':    
-                st.markdown("### Regulatory Impact Analysis ")
-                for i,c in regulation["docs"][reg]['document'].items():
-                    st.markdown(f'**{i.replace("_", " ").title()}**')
-                    st.markdown(c)
-                st.markdown("**Approved by:**")
-                for r in regulation["docs"][reg]['approved_by']:
-                    st.markdown(f'{r}')
-            
-            if reg == 'action_plan':    
-                display_action_plan(regulation["docs"][reg]['document'])
-                st.markdown("**Approved by:**")
-                for r in regulation["docs"][reg]['approved_by']:
-                    st.markdown(f'{r}')
+if regulation["docs"]:
 
-            if reg == 'policy_update':    
-                st.markdown("### Policies and Procedures ")
-                for i,c in regulation["docs"][reg]['document'].items():
-                    st.markdown(f'**{i.replace("_", " ").title()}**')
-                    st.markdown(c)
-                st.markdown("**Approved by:**")
-                for r in regulation["docs"][reg]['approved_by']:
-                    st.markdown(f'{r}')
+    for reg in regulation["docs"]:
+        if regulation["docs"][reg]['document']:
+            with st.container(border=True, height= 500):
+                if reg == 'impact_analysis':    
+                    st.markdown("### Regulatory Impact Analysis ")
+                    for i,c in regulation["docs"][reg]['document'].items():
+                        st.markdown(f'**{i.replace("_", " ").title()}**')
+                        st.markdown(c)
+                    st.markdown("**Approved by:**")
+                    for r in regulation["docs"][reg]['approved_by']:
+                        st.markdown(f'{r}')
+                
+                if reg == 'action_plan':    
+                    display_action_plan(regulation["docs"][reg]['document'])
+                    st.markdown("**Approved by:**")
+                    for r in regulation["docs"][reg]['approved_by']:
+                        st.markdown(f'{r}')
 
+                if reg == 'policy_update':    
+                    st.markdown("### Policies and Procedures ")
+                    for i,c in regulation["docs"][reg]['document'].items():
+                        st.markdown(f'**{i.replace("_", " ").title()}**')
+                        st.markdown(c)
+                    st.markdown("**Approved by:**")
+                    for r in regulation["docs"][reg]['approved_by']:
+                        st.markdown(f'{r}')
+
+else:
+    st.info('No documents to show', icon="ℹ️")
