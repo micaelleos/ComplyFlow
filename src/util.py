@@ -8,15 +8,29 @@ from datetime import datetime
 
 load_dotenv()
 
-def doc_approved(role,current_regulation,workflow:Literal["impact_analisys", "action_plan", "policies"]):
+
+def doc_approved(role,current_regulation,workflow:Literal["impact_analysis", "action_plan", "policy_update"]):
     
     if role not in st.session_state.current_regulation["docs"][workflow]["approved_by"]:
         st.session_state.current_regulation["docs"][workflow]["approved_by"].append(role)
 
+    if set(st.session_state.current_regulation["docs"][workflow]["approved_by"]) == {'Compliance', 'Legal', 'Operations', 'Risk'}:
+        st.session_state.current_regulation["docs"][workflow]["status"] = "Approved"
+
+        if workflow == "impact_analysis":
+            st.session_state.current_regulation["docs"]["action_plan"]["status"] = 'Processing'
+        elif workflow == "action_plan":
+            st.session_state.current_regulation["docs"]["policy_update"]["status"] = 'Processing'
+        
     for reg in st.session_state.regulations:
         if reg['id']==current_regulation['id']:
             reg = st.session_state.current_regulation.copy()
-    print(st.session_state.regulations)
+    
+    st.rerun()
+    
+    
+    
+
 
     
 def doc_summary(text):
@@ -89,6 +103,5 @@ def search_regulation_title(title):
  
 def init_workflow(id):
     st.session_state.current_regulation = search_regulation(id)
-    print(st.session_state.current_regulation )
     st.session_state.current_regulation["docs"]["impact_analysis"]["status"] = 'Processing'
     st.switch_page("pages/impact_analisys.py")

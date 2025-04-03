@@ -18,7 +18,7 @@ from langchain.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
 import streamlit as st
 from src.tools import generate_tools_for_user
-from src.prompts import prompt
+from src.prompts import impact_analysis_prompt
 from langchain_core.messages import AIMessage
 from typing import Literal
 
@@ -40,9 +40,18 @@ class ComplianceAgent:
         self.tools = generate_tools_for_user(workflow=workflow)
         self.memory = memory(hash)
         self.model_with_tool = self.model.bind(functions=[convert_to_openai_function(self.tools)])
+        
+
+        if workflow == 'impact_analysis':
+            self.system_prompt = impact_analysis_prompt
+        elif workflow == 'action_plan':
+            self.system_prompt = impact_analysis_prompt
+        elif workflow == 'policy_update':
+            self.system_prompt = impact_analysis_prompt
+
 
         self.prompt = ChatPromptTemplate.from_messages([
-            ("system", f"{prompt}"),
+            ("system", f"{self.system_prompt}"),
             MessagesPlaceholder(variable_name="chat_history"),
             ("user", "{input}"),
             MessagesPlaceholder(variable_name="agent_scratchpad")

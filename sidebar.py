@@ -18,9 +18,9 @@ def side_bar():
                 with st.container(border=True):
                     st.write(f"**Regulation in Analisys :** *{st.session_state.current_regulation['title']}*")
                 st.write("Workflow")
-                impact_analisys = [False if st.session_state.current_regulation["docs"]["impact_analysis"]["status"] == "Processing" else True][0]
-                action_plan = [False if st.session_state.current_regulation["docs"]['action_plan']["status"] == "Processing" else True][0]
-                policies = [False if st.session_state.current_regulation["docs"]['policy_update']["status"]  == "Processing" else True][0]
+                impact_analisys = [False if st.session_state.current_regulation["docs"]["impact_analysis"]["status"] != "Pending" else True][0]
+                action_plan = [False if st.session_state.current_regulation["docs"]['action_plan']["status"] != "Pending" else True][0]
+                policies = [False if st.session_state.current_regulation["docs"]['policy_update']["status"]  != "Pending" else True][0]
             else:
                 st.write("Workflow")
                 impact_analisys = True

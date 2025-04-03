@@ -10,11 +10,11 @@ if st.button("Back"):
 
 regulation = st.session_state.show_regulation 
 
-
 for reg in regulation["docs"]:
     if regulation["docs"][reg]['document']:
         with st.container(border=True, height= 500):
             if reg == 'impact_analysis':    
+                st.markdown("### Regulatory Impact Analysis ")
                 for i,c in regulation["docs"][reg]['document'].items():
                     st.markdown(f'**{i.replace("_", " ").title()}**')
                     st.markdown(c)
