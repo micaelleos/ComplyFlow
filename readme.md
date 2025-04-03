@@ -1,10 +1,8 @@
-# IBM Hackathon - ComplyFlow: AI-Powered Regulatory Compliance
+# ComplyFlow: AI-Powered Regulatory Compliance
 
 ## 🚀 About the Project
 
-**ComplyFlow** is an AI-powered platform designed to **automate and streamline regulatory impact analysis** for financial institutions. Built using **LangChain, Streamlit, and IBM Granite**, this tool simplifies compliance workflows by automatically analyzing new regulations, assessing their impact, and generating action plans.
-
-This project was developed as part of the **Generative AI Hackathon with IBM Granite**, hosted by **IBM and LabLabAI**.
+**ComplyFlow** is an AI-powered platform designed to **automate and streamline regulatory impact analysis** for financial institutions. Built using **LangChain, Streamlit, and OpenAI**, this tool simplifies compliance workflows by automatically analyzing new regulations, assessing their impact, and generating action plans.
 
 ## 🎯 Key Features
 
@@ -19,7 +17,7 @@ This project was developed as part of the **Generative AI Hackathon with IBM Gra
 
 - **LangChain** – For AI-driven document analysis and impact assessment.
 - **Streamlit** – To create an interactive and user-friendly interface.
-- **IBM Granite AI Model** – For NLP-powered regulatory processing.
+- **OpenAI** – For NLP-powered regulatory processing.
 - **Python** – Core language for backend processing.
 
 ## 🔄 Workflow Process
@@ -54,19 +52,33 @@ streamlit run directory.py
 - 📊 **Advanced Risk Scoring System**
 - 🔗 **API Integrations with Compliance Databases**
 
-## Hackathon Participation
-
-This project was developed for the **Generative AI Hackathon with IBM Granite**, focusing on **efficiency, automation, and smarter business operations**.
 
 ## 🤝 Contributing
 
 Pull requests are welcome! For major changes, please open an issue first to discuss improvements.
 
-## 📜 License
-
-MIT License - see [LICENSE](LICENSE) file for details.
-
 ---
 
-💡 *Developed with ❤️ for the IBM x LabLabAI Hackathon.*
+## 📜 License 
 
+This software is licensed under the following terms:  
+
+### **1. Personal and Educational Use**  
+You may use, modify, and run this software **only for personal or educational purposes, free of charge**, as long as the copyright notice and license terms remain included.  
+
+### **2. Commercial Use**  
+Any commercial use of this software **requires the purchase of a commercial license**. Examples of commercial use include:  
+- Integration into products or services that are sold or licensed.  
+- Use within for-profit organizations.  
+- Any revenue-generating activities.  
+
+#### How to Obtain a Commercial License  
+Contact us via email at [micaelle.osouza@gmail.com] for licensing details.  
+
+### **3. Restrictions**  
+- You may not sublicense, sell, or redistribute this software without written authorization.  
+- You may not remove or modify this license notice in any version of the software.  
+
+---  
+
+💡 *Developed by Micaelle Souza*
