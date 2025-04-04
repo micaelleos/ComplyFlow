@@ -4,6 +4,7 @@ from text import regulation
 from sidebar import side_bar
 from src.util import save_uploadedfile, init_workflow
 from styles import styles_directory
+from src.authorizations import config_approvall
 
 styles_directory()
 
@@ -13,7 +14,13 @@ if "current_regulation" not in st.session_state:
 
 side_bar()
 
-st.title("Regulation Directory")
+cols = st.columns([0.9,0.1])
+
+with cols[0]:
+    st.title("Regulation Directory")
+with cols[1]:
+    if st.button(":gear:",use_container_width=True):
+        config_approvall()
 
 if "regulations" not in st.session_state:
     st.session_state.regulations = [] # definir estrutura de dados da regulação, tem que ter tudo aqui, tanto o chat, quanto os documentos processados quanto o status do doc
@@ -23,6 +30,10 @@ if "regulations" not in st.session_state:
 if "system_params" not in st.session_state:
     st.session_state.system_params = {}
     st.session_state.system_params["role"] = "Compliance"
+
+    st.session_state.system_params["impact_analysis_role"] = [True,True,False,False]
+    st.session_state.system_params["action_plan_role"] = [True,True,True,True]
+    st.session_state.system_params["policies_role"] = [False,True,True,True]
 
 if "show_regulation" not in st.session_state:
     st.session_state.show_regulation = None

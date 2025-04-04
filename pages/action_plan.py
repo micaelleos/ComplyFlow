@@ -45,8 +45,6 @@ chat = ComplianceAgent(st.session_state.system_params,hash,workflow='action_plan
 if not st.session_state.current_regulation["docs"]['action_plan']["document"]:
     chat.initial_analysis(st.session_state.current_regulation)
 
-print(st.session_state.current_regulation)
-
 with st.container():
     
     with st.container():
@@ -72,7 +70,6 @@ with st.container():
     with col11:   
         if st.session_state.current_regulation["docs"]['action_plan']["document"]:
             with st.expander("Document",expanded=True):
-                print('AQUI-------------------',st.session_state.current_regulation["docs"]['action_plan']["document"])
                 display_action_plan(st.session_state.current_regulation["docs"]['action_plan']["document"])
                 # for i in st.session_state.current_regulation["docs"]['action_plan']["document"]:
                 #     st.markdown(f'**{i.replace("_"," ").title()}**')

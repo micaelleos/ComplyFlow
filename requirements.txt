@@ -10,4 +10,4 @@ langchain_openai
 langchain
 openai
 pydantic
-pdfplumber
+fpdf

@@ -30,7 +30,6 @@ def doc_approved(role,current_regulation,workflow:Literal["impact_analysis", "ac
     st.rerun()
     
 def display_action_plan(action_plan: dict):
-    st.markdown("### Action Plan")
     st.markdown(f"#### Regulation: {action_plan['regulation_title']}")
     st.markdown(f"**Receipt Date:** {action_plan['received_date']}")
     st.markdown(f"**Compliance Deadline:** {action_plan['compliance_deadline']}")
