@@ -50,10 +50,10 @@ def atualizar_chat(chat_container,prompt=None):
 
             st.session_state.current_regulation["docs"]["impact_analysis"]["messages"].append({"role": "assistant", "content": response})
 
+if st.session_state.current_regulation:
+    hash = st.session_state.current_regulation["docs"]["impact_analysis"]["chatbot_id"]
 
-hash = st.session_state.current_regulation["docs"]["impact_analysis"]["chatbot_id"]
-
-chat = ComplianceAgent(st.session_state.system_params,hash,workflow='impact_analysis')
+    chat = ComplianceAgent(st.session_state.system_params,hash,workflow='impact_analysis')
 
 if not st.session_state.current_regulation["docs"]["impact_analysis"]["document"]:
     chat.initial_analysis(st.session_state.current_regulation)
