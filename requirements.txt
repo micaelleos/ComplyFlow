@@ -11,3 +11,4 @@ langchain
 openai
 pydantic
 fpdf
+pdfplumber

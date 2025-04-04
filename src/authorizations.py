@@ -13,7 +13,7 @@ def modal(type:Literal["impact_analysis_role","action_plan_role","policy_update_
             "Select the role",
             selectec_roles , 
             horizontal=True,
-            index=index  # mantém o valor anterior
+            index=index  
         )
         if st.button("Salvar"):
             st.session_state.system_params["role"] = role
