@@ -53,7 +53,7 @@ with st.container():
             st.title("Regulatory Action Plan Agent")
         with col2:
             if st.button("Role: " + st.session_state.system_params["role"],use_container_width=True): #:information_source: :receipt:
-                modal()
+                modal("action_plan_role")
 
     
     col11, col22 = st.columns([0.5,0.5])

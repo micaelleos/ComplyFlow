@@ -6,16 +6,19 @@ import pdfplumber
 import uuid
 from datetime import datetime
 from src.tools import ActionPlan
+from src.authorizations import roles
 
 load_dotenv()
 
 
 def doc_approved(role,current_regulation,workflow:Literal["impact_analysis", "action_plan", "policy_update"]):
     
+    selectec_roles = [roles[i] for i in range(len(st.session_state.system_params[f'{workflow}_role'])) if st.session_state.system_params[f'{workflow}_role'][i]]
+
     if role not in st.session_state.current_regulation["docs"][workflow]["approved_by"]:
         st.session_state.current_regulation["docs"][workflow]["approved_by"].append(role)
 
-    if set(st.session_state.current_regulation["docs"][workflow]["approved_by"]) == {'Compliance', 'Legal', 'Operations', 'Risk'}:
+    if set(st.session_state.current_regulation["docs"][workflow]["approved_by"]) == set(selectec_roles):
         st.session_state.current_regulation["docs"][workflow]["status"] = "Approved"
 
         if workflow == "impact_analysis":

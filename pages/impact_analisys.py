@@ -53,8 +53,8 @@ with st.container():
         with col1:
             st.title("Regulatory Impact Analysis Agent")
         with col2:
-            if st.button("Role: " + st.session_state.system_params["role"],use_container_width=True): #:information_source: :receipt:
-                modal()
+            if st.button("Role: " + st.session_state.system_params["role"],use_container_width=True): 
+                modal('impact_analysis_role')
 
     
     col11, col22 = st.columns([0.5,0.5])

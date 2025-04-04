@@ -22,7 +22,7 @@ for reg in regulation["docs"]:
                 with col[0]:
                     st.markdown("### Regulatory Impact Analysis ")
                 with col[1]:
-                    st.button("Download", type="primary")
+                    st.button("Download", type="primary",key=f'db{reg}')
                 for i,c in regulation["docs"][reg]['document'].items():
                     st.markdown(f'**{i.replace("_", " ").title()}**')
                     st.markdown(c)
