@@ -48,7 +48,7 @@ def reg_bloc(regulation):
             st.write(f"**Title:** {regulation['title']}")
             st.write(f"**Status:** {regulation['status']}")
             st.write(f"**Text:** {regulation['text'][:200]}...")
-            if st.button("Init workflow",key=button_init, use_container_width=True):
+            if st.button("Init workflow",key=button_init, use_container_width=True,type="primary"):
                 init_workflow(regulation["id"])
             if st.button("See documents",key=button_seedoc, use_container_width= True):
                 call_show_documents_page(regulation)

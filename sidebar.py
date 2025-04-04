@@ -9,7 +9,7 @@ def side_bar():
     s = st.sidebar
     with s:
         image = Image.open("logoComplyFlow.png")
-        image = image.resize((1000, 155))  # Ajuste conforme necessário
+        image = image.resize((1000, 200))  # Ajuste conforme necessário
 
         st.logo(image,size="large")
 

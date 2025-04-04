@@ -3,6 +3,7 @@ from src.complianceBot import ComplianceAgent
 from styles import *
 import os
 from src.util import doc_approved
+from src.authorizations import modal
 from sidebar import side_bar
 import uuid
 
@@ -10,19 +11,6 @@ import uuid
 side_bar()
 
 styles()
-
-@st.dialog("Role configuration")
-def modal():
-        st.markdown("## Role")
-        role = st.radio(
-            "Select the role",
-            ["Compliance","Legal","Risk","Operations"], #Compliance, Legal, Risk, Operations, IT, (T), Internal Audit (A), Corporate Governance (G)
-            horizontal=True,
-            index=("Compliance","Legal","Risk","Operations").index(st.session_state.system_params["role"])  # mantém o valor anterior
-        )
-        if st.button("Salvar"):
-            st.session_state.system_params["role"] = role
-            st.rerun()
 
 @st.fragment
 def atualizar_chat(chat_container,prompt=None):

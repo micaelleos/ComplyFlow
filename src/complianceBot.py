@@ -37,8 +37,6 @@ class ComplianceAgent:
 
         self.model = ChatOpenAI(model="gpt-4o",api_key=self.OPENAI_API_KEY)
         self.memory = memory(hash)
-        
-        
 
         if workflow == 'impact_analysis':
             self.system_prompt = impact_analysis_prompt
@@ -63,7 +61,7 @@ class ComplianceAgent:
             agent_scratchpad= lambda x: format_to_openai_functions(x["intermediate_steps"])
         ) | self.prompt | self.model_with_tool | OpenAIFunctionsAgentOutputParser()
 
-        self.agent_executor = AgentExecutor(agent=self.agent_chain, tools=[self.tools], verbose=True, memory=self.memory,handle_parsing_errors=True)
+        self.agent_executor = AgentExecutor(agent=self.agent_chain, tools=[self.tools], verbose=False, memory=self.memory,handle_parsing_errors=True)
 
 
     def chat(self,query:str):  

@@ -3,26 +3,13 @@ from src.complianceBot import ComplianceAgent
 from styles import *
 import os
 from src.util import doc_approved, display_action_plan
+from src.authorizations import modal
 from sidebar import side_bar
 import uuid
-
 
 side_bar()
 
 styles()
-
-@st.dialog("Role configuration")
-def modal():
-        st.markdown("## Role")
-        role = st.radio(
-            "Select the role",
-            ["Compliance","Legal","Risk","Operations"], #Compliance, Legal, Risk, Operations, IT, (T), Internal Audit (A), Corporate Governance (G)
-            horizontal=True,
-            index=("Compliance","Legal","Risk","Operations").index(st.session_state.system_params["role"])  # mantém o valor anterior
-        )
-        if st.button("Salvar"):
-            st.session_state.system_params["role"] = role
-            st.rerun()
 
 @st.fragment
 def atualizar_chat(chat_container,prompt=None):
@@ -56,10 +43,6 @@ hash = st.session_state.current_regulation["docs"]['action_plan']["chatbot_id"]
 chat = ComplianceAgent(st.session_state.system_params,hash,workflow='action_plan')
 
 if not st.session_state.current_regulation["docs"]['action_plan']["document"]:
-#     docs =f"""
-#     Regulation: {}
-#     Impact Regulatory Analysis: {st.session_state.current_regulation["docs"]["impact_analysis"]["document"]}
-# """
     chat.initial_analysis(st.session_state.current_regulation)
 
 print(st.session_state.current_regulation)
