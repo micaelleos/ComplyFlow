@@ -31,6 +31,6 @@ def side_bar():
     s.page_link("pages/action_plan.py", label="Regulatory Action Plan", icon="2️⃣", disabled= action_plan)
     s.page_link("pages/policies.py", label="Internal Policies and Procedures", icon="3️⃣", disabled = policies)
 
-    with s:
-        st.write("Resources")
-        s.page_link("pages/about.py", label="About") 
+    # with s:
+    #     st.write("Resources")
+    #     s.page_link("pages/about.py", label="About") 
