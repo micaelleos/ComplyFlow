@@ -43,6 +43,5 @@ def config_approvall():
         st.session_state.system_params["impact_analysis_role"] = a
         st.session_state.system_params["action_plan_role"] = p
         st.session_state.system_params["policy_update_role"] = r
-        print(st.session_state.system_params)
         st.rerun()
     

@@ -12,3 +12,4 @@ openai
 pydantic
 fpdf
 pdfplumber
+markdown-pdf

@@ -40,7 +40,7 @@ class ActionPlan(BaseModel):
     objective: str = Field(description="Objetivo do plano de ação e resumo da regulação")
     affected_areas: List[str] = Field(description="Áreas impactadas pela regulação")
     risks: List[RiskMitigation] = Field(description="Lista de riscos identificados e ações de mitigação")
-    actions: List[ActionItem] = Field(description="Lista de ações a serem executadas")
+    action_plan: Optional[Union[List[ActionItem], str]] = Field(description="Lista de ações a serem executadas")
 
 class Policy(BaseModel):
     title: str = Field(description="Title of the policy")

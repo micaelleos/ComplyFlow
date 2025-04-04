@@ -16,7 +16,7 @@ def side_bar():
     
     s.page_link("directory.py", label="Regulation Directory", icon="📂")
     with s:
-        print(st.session_state)
+        
         if "current_regulation" in st.session_state:
             if st.session_state.current_regulation:
                 with st.container(border=True):

@@ -34,7 +34,6 @@ def doc_approved(role,current_regulation,workflow:Literal["impact_analysis", "ac
     
 def display_action_plan(action_plan: dict):
     st.markdown(f"#### Regulation: {action_plan['regulation_title']}")
-    st.markdown(f"**Receipt Date:** {action_plan['received_date']}")
     st.markdown(f"**Compliance Deadline:** {action_plan['compliance_deadline']}")
     st.markdown(f"**Objective:** {action_plan['objective']}")
     
@@ -47,21 +46,6 @@ def display_action_plan(action_plan: dict):
         st.markdown(f"**Impact:** {risk.impact}")
         st.markdown(f"**Probability:** {risk.probability}")
         st.markdown(f"**Mitigation Action:** {risk.mitigation_action}")
-    
-    st.markdown("#### Planned Actions")
-    for action in action_plan['actions']:
-        st.markdown(f"**{action.action}**")
-        st.markdown(f"**Responsible:** {action.responsible}")
-        st.markdown(f"**Area:** {action.area}")
-        st.markdown(f"**Priority:** {action.priority}")
-        st.markdown(f"**Deadline:** {action.deadline}")
-        st.markdown(f"**Status:** {action.status}")
-        if action.comments:
-            st.markdown(f"**Comments:** {action.comments}")
-    
-    st.markdown("#### Monitoring")
-    st.markdown(action_plan['monitoring_process'])
-
 
     
 def doc_summary(text):

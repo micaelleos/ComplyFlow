@@ -1,6 +1,7 @@
 from sidebar import side_bar
 import streamlit as st
 from src.util import display_action_plan
+from src.pdf_generator import impressão_a4
 
 side_bar()
 
@@ -19,10 +20,13 @@ for reg in regulation["docs"]:
         with st.container(border=True, height= 500):
             col = st.columns([0.8,0.2])
             if reg == 'impact_analysis':    
+                
                 with col[0]:
                     st.markdown("### Regulatory Impact Analysis ")
+                
                 with col[1]:
-                    st.button("Download", type="primary",key=f'db{reg}')
+                    st.button("Download", type="primary",key=f'db{reg}') 
+                
                 for i,c in regulation["docs"][reg]['document'].items():
                     st.markdown(f'**{i.replace("_", " ").title()}**')
                     st.markdown(c)
@@ -34,7 +38,7 @@ for reg in regulation["docs"]:
                 with col[0]:
                     st.markdown("### Regulatory Action Plan ")
                 with col[1]:
-                    st.button("Download", type="primary") 
+                    st.button("Download", type="primary",key=f'db{reg}') 
                 display_action_plan(regulation["docs"][reg]['document'])
                 st.markdown("**Approved by:**")
                 for r in regulation["docs"][reg]['approved_by']:
@@ -44,7 +48,7 @@ for reg in regulation["docs"]:
                 with col[0]:
                     st.markdown("### Policies and Procedures ")
                 with col[1]:
-                    st.button("Download", type="primary") 
+                    st.button("Download", type="primary",key=f'db{reg}') 
                 for i,c in regulation["docs"][reg]['document'].items():
                     st.markdown(f'**{i.replace("_", " ").title()}**')
                     st.markdown(c)
