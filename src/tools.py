@@ -20,7 +20,7 @@ class Params(BaseModel):
 
 class ActionItem(BaseModel):
     action: str = Field(description="Descrição da ação a ser tomada")
-    responsible: str = Field(description="Pessoa ou equipe responsável pela ação")
+    responsible: str = Field(description="Equipe responsável pela ação")
     area: str = Field(description="Área envolvida na execução da ação")
     priority: str = Field(description="Prioridade da ação (Alta, Média, Baixa)")
     deadline: Optional[Union[datetime, str]] = Field(None, description="Prazo para conclusão da ação ou 'Ongoing' se contínuo")
@@ -36,14 +36,11 @@ class RiskMitigation(BaseModel):
 class ActionPlan(BaseModel):
     id: UUID = Field(default_factory=uuid4, description="Identificador único do plano de ação")
     regulation_title: str = Field(description="Título da regulação relacionada")
-    received_date: Optional[Union[datetime, str]] = Field(description="Data de recebimento da regulação")
     compliance_deadline: Optional[Union[datetime, str]] = Field(description="Prazo final para conformidade")
-    status: str = Field(default="Rascunho", description="Status geral do plano de ação")
     objective: str = Field(description="Objetivo do plano de ação e resumo da regulação")
     affected_areas: List[str] = Field(description="Áreas impactadas pela regulação")
     risks: List[RiskMitigation] = Field(description="Lista de riscos identificados e ações de mitigação")
     actions: List[ActionItem] = Field(description="Lista de ações a serem executadas")
-    monitoring_process: str = Field(description="Descrição do processo de monitoramento e atualização do plano")
 
 class Policy(BaseModel):
     title: str = Field(description="Title of the policy")
