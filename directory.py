@@ -33,7 +33,7 @@ if "system_params" not in st.session_state:
 
     st.session_state.system_params["impact_analysis_role"] = [True,True,False,False]
     st.session_state.system_params["action_plan_role"] = [True,True,True,True]
-    st.session_state.system_params["policies_role"] = [False,True,True,True]
+    st.session_state.system_params["policy_update_role"] = [False,True,True,True]
 
 if "show_regulation" not in st.session_state:
     st.session_state.show_regulation = None
