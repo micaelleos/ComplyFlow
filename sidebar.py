@@ -2,6 +2,9 @@ import streamlit as st
 import time
 from PIL import Image
 
+if "current_regulation" not in st.session_state:
+    st.session_state.current_regulation = None
+
 def side_bar():
     s = st.sidebar
     with s:
