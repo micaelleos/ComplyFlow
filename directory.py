@@ -17,7 +17,7 @@ st.title("Regulation Directory")
 
 if "regulations" not in st.session_state:
     st.session_state.regulations = [] # definir estrutura de dados da regulação, tem que ter tudo aqui, tanto o chat, quanto os documentos processados quanto o status do doc
-    st.session_state.regulations.append(regulation)
+    #st.session_state.regulations.append(regulation)
 
 
 if "system_params" not in st.session_state:
